@@ -1,0 +1,35 @@
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.not-found-head {
+  color: #262626;
+  font-family: 'Roboto';
+}
+
+.not-found-des {
+  color: #262626;
+  font-family: 'Roboto';
+}
+
+.not-found-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 32px;
+  gap: 8px;
+
+  width: 141px;
+  height: 48px;
+  border: 0px;
+  background: #4094ef;
+  border-radius: 12px;
+  color: #ffffff;
+
+  /* Inside auto layout */
+}
