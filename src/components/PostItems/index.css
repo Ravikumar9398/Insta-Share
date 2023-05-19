@@ -206,6 +206,9 @@
   }
 
   .commented-user {
+    color: #262626;
+    font-weight: 400;
+    font-family: 'Roboto';
     font-size: 16px;
     line-height: 18px;
   }
@@ -216,7 +219,8 @@
   }
 
   .created-date {
-    font-size: 16px;
+    font-weight: 800;
+    font-size: 12px;
     line-height: 18px;
   }
 
@@ -224,4 +228,8 @@
     margin-top: 25px;
     margin-bottom: 25px;
   }
+}
+
+.comment-btn {
+  margin-right: 12px;
 }

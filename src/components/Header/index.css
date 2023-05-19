@@ -18,6 +18,12 @@
   gap: 22px;
 }
 
+@media screen and (max-width: 566px) {
+  .right-container {
+    display: none;
+  }
+}
+
 .search-container {
   box-sizing: border-box;
 
@@ -32,7 +38,7 @@
 .search-input {
   background-color: transparent;
   border: 0px;
-  padding-left: 5px;
+  padding-left: 7px;
   outline: none;
   height: 100%;
 }
@@ -68,4 +74,69 @@
 
 .color {
   color: #4094ef;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  gap: 22px;
+}
+
+@media screen and (max-width: 566px) {
+  .header-links {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 566px) {
+  .menu-container {
+    display: none;
+  }
+}
+
+.insta-logo {
+  align-self: center;
+  width: 122px;
+  margin-top: 12px;
+}
+
+.popup-container {
+  background-color: #dbdbdb;
+  width: 455px;
+  height: 345px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.popup-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.list-item {
+  font-family: 'Roboto';
+  font-size: 24px;
+}
+
+.list-button {
+  background-color: transparent;
+  border: 0px;
+  font-family: 'Roboto';
+  font-size: 24px;
+}
+
+.mobile-search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  margin-top: 12px;
 }

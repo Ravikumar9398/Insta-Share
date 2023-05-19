@@ -14,7 +14,8 @@
 
 .slick-container {
   width: 80%;
-  margin-top: 10px;
+  margin-top: 30px;
+  list-style-type: none;
 }
 
 @media screen and (min-width: 768px) {
@@ -40,8 +41,8 @@
 .user-story-name {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 11px;
   line-height: 24px;
   color: #262626;
   text-align: center;

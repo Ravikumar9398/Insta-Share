@@ -20,7 +20,6 @@ class Home extends Component {
   state = {
     postDetails: [],
     apiStatus: apiConstantStatus.initial,
-    searchInput: '',
     searchList: [],
   }
 
@@ -33,7 +32,7 @@ class Home extends Component {
       apiStatus: apiConstantStatus.in_progress,
     })
 
-    const usersPostApiUrl = `https://apis.ccbp.in/insta-share/posts?search=${searchInput}`
+    const SearchPostsAPIURL = `https://apis.ccbp.in/insta-share/posts?search=${searchInput}`
 
     const jwtToken = Cookies.get('jwt_token')
     const option = {
@@ -43,7 +42,7 @@ class Home extends Component {
       method: 'GET',
     }
 
-    const response = await fetch(usersPostApiUrl, option)
+    const response = await fetch(SearchPostsAPIURL, option)
     const data = await response.json()
     console.log(data)
     if (response.ok === true) {
@@ -63,10 +62,11 @@ class Home extends Component {
         userId: each.user_id,
         userName: each.user_name,
       }))
+      console.log(updatedData)
 
       this.setState({
-        searchList: updatedData,
         apiStatus: apiConstantStatus.search,
+        searchList: data.posts,
       })
     }
     if (response.status === 401) {
@@ -80,9 +80,8 @@ class Home extends Component {
     this.setState({
       apiStatus: apiConstantStatus.in_progress,
     })
-    const {searchInput} = this.state
-    console.log(searchInput)
-    const usersPostApiUrl = 'https://apis.ccbp.in/insta-share/posts'
+
+    const PostsAPIURL = 'https://apis.ccbp.in/insta-share/posts'
 
     const jwtToken = Cookies.get('jwt_token')
     const option = {
@@ -92,7 +91,7 @@ class Home extends Component {
       method: 'GET',
     }
 
-    const response = await fetch(usersPostApiUrl, option)
+    const response = await fetch(PostsAPIURL, option)
     const data = await response.json()
     console.log(data)
     if (response.ok === true) {
@@ -112,9 +111,9 @@ class Home extends Component {
         userId: each.user_id,
         userName: each.user_name,
       }))
-
+      console.log(updatedData)
       this.setState({
-        postDetails: updatedData,
+        postDetails: data.posts,
         apiStatus: apiConstantStatus.success,
       })
     }
@@ -125,8 +124,48 @@ class Home extends Component {
     }
   }
 
+  renderSuccess = () => {
+    const {postDetails} = this.state
+    console.log(postDetails)
+    return (
+      <ul>
+        {postDetails.map(each => (
+          <PostItems itemDetails={each} key={each.postId} />
+        ))}
+      </ul>
+    )
+  }
+
+  onClickRetry = () => this.getPostDetails()
+
+  renderFailure = () => (
+    <div className="failure-container">
+      <img
+        src="https://res.cloudinary.com/dewzkraqq/image/upload/v1683945695/Pathpath_gdzdyw.png"
+        alt="failure view"
+      />
+      <p>Something went wrong. Please try again</p>
+      <button type="button" onClick={this.onClickRetry}>
+        Try again
+      </button>
+    </div>
+  )
+
+  renderLoading = () => (
+    <div className="loader-container">
+      <Loader type="TailSpin" color="#4094EF" height={50} width={50} />
+    </div>
+  )
+
+  renderLoading = () => (
+    <div className="loader-container">
+      <Loader type="TailSpin" color="#4094EF" height={50} width={50} />
+    </div>
+  )
+
   renderSearch = () => {
     const {searchList} = this.state
+    console.log(searchList.length)
     if (searchList.length === 0) {
       return (
         <div className="no-search-container">
@@ -151,35 +190,6 @@ class Home extends Component {
       </div>
     )
   }
-
-  renderSuccess = () => {
-    const {postDetails} = this.state
-
-    return (
-      <ul>
-        {postDetails.map(each => (
-          <PostItems itemDetails={each} key={each.postId} />
-        ))}
-      </ul>
-    )
-  }
-
-  renderFailure = () => (
-    <div>
-      <img
-        src="https://res.cloudinary.com/dewzkraqq/image/upload/v1683945695/Pathpath_gdzdyw.png"
-        alt="no result"
-      />
-      <p>Something went wrong. Please try again</p>
-      <button type="button">Try again</button>
-    </div>
-  )
-
-  renderLoading = () => (
-    <div className="loader-container">
-      <Loader type="TailSpin" color="#4094EF" height={50} width={50} />
-    </div>
-  )
 
   renderPostItems = () => {
     const {apiStatus} = this.state

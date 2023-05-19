@@ -16,69 +16,83 @@ class PostItems extends Component {
     isLike: false,
   }
 
-  componentDidMount() {
-    this.postLikeStatus()
-  }
+  onClickLike = async () => {
+    const {isLike} = this.state
+    this.setState({
+      isLike: !isLike,
+    })
 
-  postLikeStatus = async () => {
     const {itemDetails} = this.props
-    const {postId} = itemDetails
+
+    const {postId} = itemDetails.post_id
     const jwtToken = Cookies.get('jwt_token')
-    const postApiUrl = `https://apis.ccbp.in/insta-share/posts/${postId}/like`
+    const PostLikeAPIURL = `https://apis.ccbp.in/insta-share/posts/${postId}/like`
+
+    const likeStatus = {like_status: true}
 
     const option = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
       method: 'POST',
+      body: JSON.stringify(likeStatus),
     }
 
-    const response = await fetch(postApiUrl, option)
+    const response = await fetch(PostLikeAPIURL, option)
     const data = await response.json()
     console.log(data)
   }
 
-  onClickLike = () => {
+  onClickDisLike = async () => {
     const {isLike} = this.state
     this.setState({
       isLike: !isLike,
     })
-  }
+    const {itemDetails} = this.props
 
-  onClickDislike = () => {
-    const {isLike} = this.state
-    this.setState({
-      isLike: !isLike,
-    })
+    const {postId} = itemDetails.post_id
+    const jwtToken = Cookies.get('jwt_token')
+    const PostLikeAPIURL = `https://apis.ccbp.in/insta-share/posts/${postId}/like`
+
+    const likeStatus = {like_status: false}
+
+    const option = {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: 'POST',
+      body: JSON.stringify(likeStatus),
+    }
+
+    const response = await fetch(PostLikeAPIURL, option)
+    const data = await response.json()
+    console.log(data)
   }
 
   render() {
     const {isLike} = this.state
     const {itemDetails} = this.props
-    const {
-      postDetails,
-      profilePic,
-      userName,
-      likesCount,
-      comments,
-      createdAt,
-      userId,
-    } = itemDetails
+
     return (
       <li className="user-post-list-item">
-        <Link to={`/users/${userId}`} className="profile-link">
-          <div className="profile-section">
-            <div className="image-container">
-              <img
-                src={profilePic}
-                alt="post author profile"
-                className="profile-pic"
-              />
-            </div>
-            <p className="profile-user-name">{userName}</p>
+        <div className="profile-section">
+          <div className="image-container">
+            <img
+              src={itemDetails.profile_pic}
+              alt="post author profile"
+              className="profile-pic"
+            />
           </div>
-        </Link>
-        <img src={postDetails.imageUrl} alt="post" className="profile-post" />
+          <Link to={`/users/${itemDetails.user_id}`} className="profile-link">
+            <p className="profile-user-name">{itemDetails.user_name}</p>
+          </Link>
+        </div>
+
+        <img
+          src={itemDetails.post_details.image_url}
+          alt="post"
+          className="profile-post"
+        />
         <div className="post-detail-and-stats-container">
           <div>
             {!isLike ? (
@@ -87,31 +101,34 @@ class PostItems extends Component {
                 onClick={this.onClickLike}
                 className="user-post-button"
               >
-                <BsHeart size={20} color="#262626" />
+                <BsHeart size={20} />
               </button>
             ) : (
               <button
                 type="button"
-                onClick={this.onClickDislike}
+                onClick={this.onClickDisLike}
                 className="user-post-button"
               >
-                <FcLike size={20} color="red" />
+                <FcLike size={20} />
               </button>
             )}
 
-            <FaRegComment size={20} color="#475569" />
+            <FaRegComment size={22} color="#475569" className="comment-btn" />
 
-            <BiShareAlt size={20} color="475569" />
+            <BiShareAlt size={22} color="#475569" />
           </div>
-          <p className="likes">{isLike ? likesCount + 1 : likesCount} likes</p>
-          <p className="caption">{postDetails.caption}</p>
-          {comments.map(comment => (
-            <p key={comment.userId} className="comments">
+          <p className="likes">
+            {isLike ? itemDetails.likes_count + 1 : itemDetails.likes_count}
+            likes
+          </p>
+          <p className="caption">{itemDetails.post_details.caption}</p>
+          {itemDetails.comments.map(comment => (
+            <div key={comment.userId} className="comments">
               <span className="commented-user">{comment.userName} </span>
-              <span className="user-comment">{comment.comment}</span>
-            </p>
+              <p className="user-comment">{comment.comment}</p>
+            </div>
           ))}
-          <p className="created-date">{createdAt}</p>
+          <p className="created-date">{itemDetails.created_at}</p>
         </div>
       </li>
     )

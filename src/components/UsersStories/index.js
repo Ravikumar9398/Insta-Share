@@ -73,7 +73,7 @@ class UserStories extends Component {
 
     const jwtToken = Cookies.get('jwt_token')
 
-    const userStoriesApiUrl = 'https://apis.ccbp.in/insta-share/stories'
+    const UserStoriesAPIURL = 'https://apis.ccbp.in/insta-share/stories'
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -81,10 +81,10 @@ class UserStories extends Component {
       method: 'GET',
     }
 
-    const response = await fetch(userStoriesApiUrl, options)
+    const response = await fetch(UserStoriesAPIURL, options)
     if (response.ok === true) {
       const fetchedData = await response.json()
-
+      console.log(fetchedData)
       const updatedData = await fetchedData.users_stories.map(userStory => ({
         storyUrl: userStory.story_url,
         userId: userStory.user_id,
@@ -112,19 +112,19 @@ class UserStories extends Component {
     const {userStories} = this.state
 
     return (
-      <div className="slick-container">
+      <ul className="slick-container">
         <Slider {...settings}>
           {userStories.map(eachLogo => {
             const {userId, storyUrl, userName} = eachLogo
             return (
-              <div className="slick-item" key={userId}>
+              <li className="slick-item" key={userId}>
                 <img className="logo-image" src={storyUrl} alt="user story" />
                 <p className="user-story-name">{userName}</p>
-              </div>
+              </li>
             )
           })}
         </Slider>
-      </div>
+      </ul>
     )
   }
 
